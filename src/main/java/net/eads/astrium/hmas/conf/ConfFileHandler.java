@@ -21,7 +21,7 @@ import net.eads.astrium.hmas.conf.exceptions.ConfFileNotFoundException;
  *
  * @author re-sulrich
  */
-public class DreamConfFileHandler {
+public class ConfFileHandler {
 
     
     public static String getContent(String filePath) throws IOException

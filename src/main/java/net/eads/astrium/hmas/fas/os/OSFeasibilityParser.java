@@ -24,10 +24,12 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.ws.rs.core.MultivaluedMap;
+import net.eads.astrium.dream.util.DateHandler;
 import net.opengis.eosps.x20.AcquisitionAngleType;
 import net.opengis.eosps.x20.AcquisitionParametersOPTType;
 import net.opengis.eosps.x20.AcquisitionParametersSARType;
@@ -82,6 +84,8 @@ public class OSFeasibilityParser {
         Map<String, String> conf = new HashMap<>();
         for (String parameter : configuration.keySet()) {
 
+            System.out.println("Putting " + parameter + ", value is : " + configuration.getFirst(parameter));
+            
             conf.put(parameter, configuration.getFirst(parameter));
         }
 
@@ -96,24 +100,54 @@ public class OSFeasibilityParser {
         //To be changed to polygon (EOSPS) = parseable string : lat.1,lon.1 lat.2,lon.2 ... lat.N,lon.N
         String[] box = null;
         String coordinates = "";
-        if (conf.get("box") != null) {
-            box = conf.remove("box").split(",");
-            if (box.length < 4) {
-                throw new ParseException("box", -1);
-            }
-
-            coordinates = ""
-                    + box[0] + "," + box[1] + " "
-                    + box[2] + "," + box[1] + " "
-                    + box[2] + "," + box[3] + " "
-                    + box[0] + "," + box[3] + " "
-                    + box[0] + "," + box[1] + "";
+        String bbox = conf.get("box");
+        
+        System.out.println("Box : " + bbox);
+        
+        if (bbox == null || bbox.equals("")) {
+            throw new ParseException("Could not parse the 'box' parameter.", -1);
         }
+        box = bbox.split(",");
+        if (box.length < 4) {
+            throw new ParseException("box", -1);
+        }
+
+        double latSouth = Double.valueOf(box[3]);
+        double latNorth = Double.valueOf(box[1]);
+        double lonWest = Double.valueOf(box[0]);
+        double lonEast = Double.valueOf(box[2]);
+
+        if (latSouth > latNorth) {
+            double tmp = latSouth;
+            latSouth = latNorth;
+            latNorth = tmp;
+        }
+
+        if (lonWest > lonEast) {
+            double tmp = lonWest;
+            lonWest = lonEast;
+            lonEast = tmp;
+        }
+
+        coordinates = ""
+                + lonWest + "," + latNorth + " "
+                + lonEast + "," + latNorth + " "
+                + lonEast + "," + latSouth + " "
+                + lonWest + "," + latSouth + " "
+                + lonWest + "," + latNorth + "";
 
         //TOI
         String begin = conf.remove("start"); //"2013-06-30T00:00:00Z";
         String end = conf.remove("end"); //"2013-07-20T00:00:00Z";
 
+        if (begin == null || begin.equals("")) {
+            begin = DateHandler.formatDate(Calendar.getInstance().getTime());
+            System.out.println("Setting begin time to now");
+        }
+        if (end == null || end.equals("")) {
+            throw new ParseException("Date parameters could not be parsed", -1);
+        }
+        
         //Acquisition angles
         String incidenceAz = conf.remove("incAz");
         String incidenceEl = conf.remove("incEl");
@@ -129,44 +163,52 @@ public class OSFeasibilityParser {
         double minPointingAlong = 0.0;
         double maxPointingAlong = 0.0;
 
-        try {
-            minIncidenceAzimuth = Double.valueOf(incidenceAz.split(",")[0]);
-        } catch (Exception e) {
+        if (incidenceAz != null && !incidenceAz.equals("")) {
+            try {
+                minIncidenceAzimuth = Double.valueOf(incidenceAz.split(",")[0]);
+            } catch (Exception e) {
+            }
+
+            try {
+                maxIncidenceAzimuth = Double.valueOf(incidenceAz.split(",")[1]);
+            } catch (Exception e) {
+            }
+        }
+        
+        if (incidenceEl != null && !incidenceEl.equals("")) {
+            try {
+                minIncidenceElevation = Double.valueOf(incidenceEl.split(",")[0]);
+            } catch (Exception e) {
+            }
+
+            try {
+                maxIncidenceElevation = Double.valueOf(incidenceEl.split(",")[1]);
+            } catch (Exception e) {
+            }
         }
 
-        try {
-            maxIncidenceAzimuth = Double.valueOf(incidenceAz.split(",")[1]);
-        } catch (Exception e) {
-        }
+        if (pointingAc != null && !pointingAc.equals("")) {
+            try {
+                minPointingAcross = Double.valueOf(pointingAc.split(",")[0]);
+            } catch (Exception e) {
+            }
 
-        try {
-            minIncidenceElevation = Double.valueOf(incidenceEl.split(",")[0]);
-        } catch (Exception e) {
+            try {
+                maxPointingAcross = Double.valueOf(pointingAc.split(",")[1]);
+            } catch (Exception e) {
+            }
         }
+        
+        if (pointingAl != null && !pointingAl.equals("")) {
+            try {
+                minPointingAlong = Double.valueOf(pointingAl.split(",")[0]);
+            } catch (Exception e) {
+            }
 
-        try {
-            maxIncidenceElevation = Double.valueOf(incidenceEl.split(",")[1]);
-        } catch (Exception e) {
-        }
-
-        try {
-            minPointingAcross = Double.valueOf(pointingAc.split(",")[0]);
-        } catch (Exception e) {
-        }
-
-        try {
-            maxPointingAcross = Double.valueOf(pointingAc.split(",")[1]);
-        } catch (Exception e) {
-        }
-
-        try {
-            minPointingAlong = Double.valueOf(pointingAl.split(",")[0]);
-        } catch (Exception e) {
-        }
-
-        try {
-            maxPointingAlong = Double.valueOf(pointingAl.split(",")[1]);
-        } catch (Exception e) {
+            try {
+                maxPointingAlong = Double.valueOf(pointingAl.split(",")[1]);
+            } catch (Exception e) {
+            }
         }
 
         //Satellite / Sensor
@@ -178,6 +220,7 @@ public class OSFeasibilityParser {
             instrument = null;
         
         //Setting the sensor type if is not null
+        //Only Sentinel 1 implemented so sensor type is always SAR
         if (sensorType == null) {
             sensorType = "SAR";
         }
@@ -193,6 +236,10 @@ public class OSFeasibilityParser {
         String coverageType = conf.remove("coverageType");
         
         String instrumentMode = conf.remove("sensorMode");
+        
+        if (instrumentMode == null || instrumentMode.equals("")) {
+            instrumentMode = "SM";
+        }
 
         String[] resolutions = null;
         if (conf.get("resolution") != null) {
@@ -248,7 +295,8 @@ public class OSFeasibilityParser {
 
         MonoscopicAcquisitionType mono = cov.addNewAcquisitionType().addNewMonoscopicAcquisition();
 
-        mono.addNewCoverageType().setValue(coverageType);
+        if (coverageType != null && !coverageType.equals(""))
+            mono.addNewCoverageType().setValue(coverageType);
 
         AcquisitionAngleType acqAngle = mono.addNewAcquisitionAngle();
 
@@ -282,8 +330,10 @@ public class OSFeasibilityParser {
         l4.add(maxPointingAlong);
         al.setValue(l4);
 
-        CategoryType covType = mono.addNewCoverageType();
-        covType.setValue(coverageType);
+        if (coverageType != null && !coverageType.equals("")) {
+            CategoryType covType = mono.addNewCoverageType();
+            covType.setValue(coverageType);
+        }
         
 //        mono.addNewMaxCoupleDelay();
 //        mono.addNewBHRatio();
@@ -301,8 +351,8 @@ public class OSFeasibilityParser {
 
                 optap.addNewInstrumentMode().setValue(instrumentMode);
 
-                if (resolutions != null && resolutions.length > 0) {
-
+                if (resolutions != null && resolutions.length > 0 && resolutions[0] != null && !resolutions[0].equals("")) {
+                    
                     QuantityRangeType gr = optap.addNewGroundResolution();
                     List l5 = new ArrayList<Double>();
                     l5.add(resolutions[0]);
@@ -314,29 +364,42 @@ public class OSFeasibilityParser {
                 
                 double minLuminosity = 0.0;
                 try {
-                    if (conf.get("minLum") != null)
-                        minLuminosity = Double.valueOf(conf.get("minLum"));
+                    String minLum =conf.get("minLum");
+                    if (minLum != null && !minLum.equals("")) {
+                        minLuminosity = Double.valueOf(minLum);
+                        
+                        QuantityType minLumi = optap.addNewMinLuminosity();
+                        minLumi.addNewUom().setCode("W");
+                        minLumi.setValue(minLuminosity);
+                    }
+                
                 } catch (NumberFormatException e) {
                 }
-
-                QuantityType minLumi = optap.addNewMinLuminosity();
-                minLumi.addNewUom().setCode("W");
-                minLumi.setValue(minLuminosity);
-
+                
+                ValidationParametersOPTType optvp = cov.addNewValidationParameters().addNewValidationParametersOPT();
+                
                 //OPT validation parameters
                 String cC = conf.get("cloudCover");
                 double cloudCover = 0.0;
                 try {
-                    if (cC != null)
+                    if (cC != null && !cC.equals("")) {
                         cloudCover = Double.valueOf(cC);
+                        QuantityType cc = optvp.addNewMaxCloudCover();
+                        cc.addNewUom().setCode("%");
+                        cc.setValue(cloudCover);
+                    }
                 } catch (NumberFormatException e) {
                 }
 
                 String sC = conf.get("snowCover");
                 double snowCover = 0.0;
                 try {
-                    if (sC != null)
-                    snowCover = Double.valueOf(sC);
+                    if (sC != null && !sC.equals("")) {
+                        snowCover = Double.valueOf(sC);
+                        QuantityType sc = optvp.addNewMaxSnowCover();
+                        sc.addNewUom().setCode("%");
+                        sc.setValue(snowCover);
+                    }
                 } catch (NumberFormatException e) {
                 }
 
@@ -344,36 +407,28 @@ public class OSFeasibilityParser {
                 String swa = conf.get("sandWindAccepted");
                 if (swa != null && swa.equalsIgnoreCase("true")) {
                     sandWindAccepted = true;
+                    optvp.addNewSandWindAccepted().setValue(sandWindAccepted);
                 }
 
                 boolean hazeAccepted = false;
                 String ha = conf.get("hazeAccepted");
                 if (ha != null && ha.equalsIgnoreCase("true")) {
-                    hazeAccepted = true;
+                    hazeAccepted = true;                    
+                    optvp.addNewHazeAccepted().setValue(hazeAccepted);
                 }
 
                 String mSG = conf.get("maxSunGlint");
                 double maxSunGlint = 0.0;
                 try {
-                    if (mSG != null)
+                    if (mSG != null && !mSG.equals("")) {
                         maxSunGlint = Double.valueOf(mSG);
+                        QuantityType msg = optvp.addNewMaxSunGlint();
+                        msg.addNewUom().setCode("%");
+                        msg.setValue(maxSunGlint);
+                    }
+
                 } catch (NumberFormatException e) {
                 }
-
-                ValidationParametersOPTType optvp = cov.addNewValidationParameters().addNewValidationParametersOPT();
-                QuantityType cc = optvp.addNewMaxCloudCover();
-                cc.addNewUom().setCode("%");
-                cc.setValue(cloudCover);
-                QuantityType sc = optvp.addNewMaxSnowCover();
-                sc.addNewUom().setCode("%");
-                sc.setValue(snowCover);
-                QuantityType msg = optvp.addNewMaxSunGlint();
-                msg.addNewUom().setCode("%");
-                msg.setValue(maxSunGlint);
-
-                optvp.addNewHazeAccepted().setValue(hazeAccepted);
-                optvp.addNewSandWindAccepted().setValue(sandWindAccepted);
-
             }
             //SAR Specific
             if (sensorType.equalsIgnoreCase("sar")) {
@@ -385,8 +440,7 @@ public class OSFeasibilityParser {
 
                 sarap.addNewFusionAccepted().setValue(fusionAccepted);
 
-                
-                if (resolutions != null && resolutions.length > 0) {
+                if (resolutions != null && resolutions.length > 0 && resolutions[0] != null && !resolutions[0].equals("")) {
                     
                     QuantityRangeType gr = sarap.addNewGroundResolution();
                     List l5 = new ArrayList<>();
@@ -398,34 +452,33 @@ public class OSFeasibilityParser {
                 }
                 
                 String polarisationMode = conf.get("polMode");
+                if (polarisationMode != null && !polarisationMode.equals(""))
                 sarap.addNewPolarizationMode().setValue(polarisationMode);
                 
-                String mNL = conf.get("maxNoiseLevel");
-                String mAL = conf.get("maxAmbiguityLevel");
+                
+                ValidationParametersSARType sarvp = cov.addNewValidationParameters().addNewValidationParametersSAR();
                 
                 //SAR validation parameters
+                String mNL = conf.get("maxNoiseLevel");
                 double noise = 0.0;
                 try {
-                    if (mNL != null)
+                    if (mNL != null && !mNL.equals(""))
                         noise = Double.valueOf(mNL);
+                        QuantityType n = sarvp.addNewMaxNoiseLevel();
+                        n.addNewUom().setCode("dB");
+                        n.setValue(noise);
                 } catch (NumberFormatException e) {
                 }
+                String mAL = conf.get("maxAmbiguityLevel");
                 double ambiguity = 0.0;
                 try {
-                    if (mAL != null)
+                    if (mAL != null && !mAL.equals(""))
                         ambiguity = Double.valueOf(mAL);
+                        QuantityType a = sarvp.addNewMaxAmbiguityLevel();
+                        a.addNewUom().setCode("dB");
+                        a.setValue(ambiguity);
                 } catch (NumberFormatException e) {
                 }
-
-                ValidationParametersSARType sarvp = cov.addNewValidationParameters().addNewValidationParametersSAR();
-                QuantityType n = sarvp.addNewMaxNoiseLevel();
-                n.addNewUom().setCode("dB");
-                n.setValue(noise);
-                QuantityType a = sarvp.addNewMaxAmbiguityLevel();
-                a.addNewUom().setCode("dB");
-                a.setValue(ambiguity);
-
-
             }
         }
 

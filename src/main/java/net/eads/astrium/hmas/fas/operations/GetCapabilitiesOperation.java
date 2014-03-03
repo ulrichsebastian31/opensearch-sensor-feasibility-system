@@ -8,7 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.eads.astrium.hmas.conf.exceptions.ConfFileNotFoundException;
 import net.eads.astrium.hmas.exceptions.GetCapabilitiesFault;
-import net.eads.astrium.hmas.fas.configuration.FASConfFolder;
+import net.eads.astrium.hmas.fas.conf.FASConfFolder;
 
 import org.apache.xmlbeans.GDuration;
 import org.oasisOpen.docs.wsn.t1.TopicSetType;

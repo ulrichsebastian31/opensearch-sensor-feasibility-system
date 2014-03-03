@@ -3,7 +3,7 @@ package net.eads.astrium.hmas.fas.operations;
 import net.eads.astrium.hmas.operations.DreamEOSPSOperation;
 import java.util.ArrayList;
 import net.eads.astrium.hmas.exceptions.DescribeTaskingFault;
-import net.eads.astrium.hmas.fas.configuration.FASConfFolder;
+import net.eads.astrium.hmas.fas.conf.FASConfFolder;
 
 import net.opengis.eosps.x20.AcquisitionAngleType;
 import net.opengis.eosps.x20.AcquisitionParametersOPTType;

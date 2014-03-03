@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 import net.eads.astrium.hmas.conf.exceptions.ConfFileNotFoundException;
 import net.eads.astrium.hmas.conf.exceptions.ConfFileParsingException;
 import net.eads.astrium.hmas.exceptions.DescribeSensorFault;
-import net.eads.astrium.hmas.fas.configuration.FASConfFolder;
+import net.eads.astrium.hmas.fas.conf.FASConfFolder;
 import net.eads.astrium.hmas.operations.DreamEOSPSOperation;
 
 import net.opengis.eosps.x20.DescribeSensorDocument;

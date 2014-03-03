@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package net.eads.astrium.hmas.fas.configuration.sensors;
+package net.eads.astrium.hmas.fas.conf.sensors;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,11 +12,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import net.eads.astrium.hmas.conf.DreamConfFolder;
+import net.eads.astrium.hmas.conf.ConfFolder;
 import net.eads.astrium.hmas.conf.exceptions.ConfFileAlreadyExistsException;
 import net.eads.astrium.hmas.conf.exceptions.ConfFileNotFoundException;
-import net.eads.astrium.hmas.fas.configuration.exceptions.SensorAlreadyExistsException;
-import net.eads.astrium.hmas.fas.configuration.exceptions.SensorNotFoundException;
+import net.eads.astrium.hmas.fas.conf.exceptions.SensorAlreadyExistsException;
+import net.eads.astrium.hmas.fas.conf.exceptions.SensorNotFoundException;
 
 /**
  *
@@ -36,8 +36,8 @@ public class SensorsConfigurationsFolder {
         this.sensors = new HashMap<String, SensorConfigurationFolder>();
         
         this.folderPath = 
-                DreamConfFolder.DREAM_WS_CONF_FOLDER + 
-                DreamConfFolder.getFASConfTypePath() + 
+                ConfFolder.DREAM_WS_CONF_FOLDER + 
+                ConfFolder.getFASConfTypePath() + 
                 instanceId + File.separator + "sensors" + File.separator;
         
         File folder = new File(folderPath);

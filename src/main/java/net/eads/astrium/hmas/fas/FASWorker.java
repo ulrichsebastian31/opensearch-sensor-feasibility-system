@@ -5,9 +5,9 @@
 package net.eads.astrium.hmas.fas;
 
 import java.io.IOException;
-import net.eads.astrium.hmas.fas.configuration.FASConfFolder;
-import net.eads.astrium.hmas.fas.configuration.exceptions.FASAlreadyExistsException;
-import net.eads.astrium.hmas.fas.configuration.exceptions.FASNotFoundException;
+import net.eads.astrium.hmas.fas.conf.FASConfFolder;
+import net.eads.astrium.hmas.fas.conf.exceptions.FASAlreadyExistsException;
+import net.eads.astrium.hmas.fas.conf.exceptions.FASNotFoundException;
 import net.eads.astrium.hmas.exceptions.DescribeSensorFault;
 import net.eads.astrium.hmas.exceptions.DescribeTaskingFault;
 import net.eads.astrium.hmas.exceptions.GetCapabilitiesFault;

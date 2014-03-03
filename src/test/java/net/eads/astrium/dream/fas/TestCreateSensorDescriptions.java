@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.eads.astrium.hmas.conf.exceptions.ConfFileAlreadyExistsException;
-import net.eads.astrium.hmas.fas.configuration.sensors.SensorsConfigurationsFolder;
+import net.eads.astrium.hmas.fas.conf.sensors.SensorsConfigurationsFolder;
 import org.junit.Test;
 
 /**

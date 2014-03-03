@@ -2,12 +2,12 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package net.eads.astrium.hmas.fas.configuration.os;
+package net.eads.astrium.hmas.fas.conf.os;
 
 import java.io.File;
 import java.io.IOException;
-import net.eads.astrium.hmas.conf.DreamConfFileHandler;
-import net.eads.astrium.hmas.conf.DreamConfFolder;
+import net.eads.astrium.hmas.conf.ConfFileHandler;
+import net.eads.astrium.hmas.conf.ConfFolder;
 
 /**
  *
@@ -20,13 +20,13 @@ public class DescriptionDocumentLoader {
     public DescriptionDocumentLoader(String instanceId) 
     {
         filePath = 
-                DreamConfFolder.DREAM_WS_CONF_FOLDER + 
-                DreamConfFolder.getFASConfTypePath() + 
+                ConfFolder.DREAM_WS_CONF_FOLDER + 
+                ConfFolder.getFASConfTypePath() + 
                 instanceId + File.separator + "description.xml";
     }
     
     public String getContent() throws IOException {
         
-        return DreamConfFileHandler.getContent(filePath);
+        return ConfFileHandler.getContent(filePath);
     }
 }

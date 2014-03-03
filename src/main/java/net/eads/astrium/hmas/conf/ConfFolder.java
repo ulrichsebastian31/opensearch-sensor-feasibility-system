@@ -12,7 +12,7 @@ import net.eads.astrium.hmas.conf.exceptions.ConfFolderNotFoundException;
  *
  * @author re-sulrich
  */
-public class DreamConfFolder {
+public class ConfFolder {
     
     
     /**
@@ -55,7 +55,7 @@ public class DreamConfFolder {
     public static void createConfFolder(ConfFolderType type, String instanceId) 
             throws ConfFolderAlreadyExistsException 
     {
-        DreamConfFolder conf = new DreamConfFolder(type, instanceId);
+        ConfFolder conf = new ConfFolder(type, instanceId);
         
         if (conf.getConfFolder().exists() && conf.getConfFolder().isDirectory())
         {
@@ -71,10 +71,10 @@ public class DreamConfFolder {
      * @param name
      * @return
      */
-    public static DreamConfFolder loadConfFolder(ConfFolderType type, String instanceId) 
+    public static ConfFolder loadConfFolder(ConfFolderType type, String instanceId) 
             throws ConfFolderNotFoundException 
     {
-        DreamConfFolder conf = new DreamConfFolder(type, instanceId);
+        ConfFolder conf = new ConfFolder(type, instanceId);
         
         if (!conf.getConfFolder().exists() || !conf.getConfFolder().isDirectory())
         {
@@ -94,7 +94,7 @@ public class DreamConfFolder {
     }
 
 
-    protected DreamConfFolder(ConfFolderType type, String instanceId) {
+    protected ConfFolder(ConfFolderType type, String instanceId) {
         
         this.confFolder = new File(DREAM_WS_CONF_FOLDER + getConfTypePath(type) + instanceId + File.separator);
         this.instanceId = instanceId;

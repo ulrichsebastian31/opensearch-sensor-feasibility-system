@@ -30,7 +30,7 @@ public class TestGetFeasibility {
         ClientConfig config = new DefaultClientConfig();
         Client client = Client.create(config);
         
-        String request = "http://127.0.0.1:8080/HMAS-FAS-1.0-SNAPSHOT/hmas/fas/os/search";
+        String request = "http://127.0.0.1:8080/DreamServices/dream/fas/s1-fas/os/search";
         
         WebResource webResource = client.resource(request);
         

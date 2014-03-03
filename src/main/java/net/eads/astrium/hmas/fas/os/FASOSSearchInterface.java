@@ -19,8 +19,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import net.eads.astrium.hmas.exceptions.GetFeasibilityFault;
 import net.eads.astrium.hmas.fas.FASWorker;
-import net.eads.astrium.hmas.fas.configuration.exceptions.FASNotFoundException;
-import net.eads.astrium.hmas.fas.configuration.exceptions.SensorNotFoundException;
+import net.eads.astrium.hmas.fas.conf.exceptions.FASNotFoundException;
+import net.eads.astrium.hmas.fas.conf.exceptions.SensorNotFoundException;
 import net.eads.astrium.hmas.fas.rs.FASWebService;
 import net.eads.astrium.hmas.rs.exceptions.ServiceNotFoundException;
 import net.opengis.eosps.x20.GetFeasibilityDocument;
@@ -66,8 +66,6 @@ public class FASOSSearchInterface {
             {
                 throw new ServiceNotFoundException(fasId);
             }
-            
-            
             
             if (worker == null)
             {

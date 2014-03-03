@@ -17,16 +17,16 @@ import net.eads.astrium.dream.eocfihandler.dreameocfihandler.EoCfiHndlrError;
 import net.eads.astrium.dream.util.DateHandler;
 import net.eads.astrium.dream.util.structures.SatellitePlatform;
 import net.eads.astrium.dream.util.structures.TimePeriod;
-import net.eads.astrium.dream.util.structures.tasking.Point;
-import net.eads.astrium.dream.util.structures.tasking.Polygon;
+import net.eads.astrium.dream.util.structures.tasking.geometries.Point;
+import net.eads.astrium.dream.util.structures.tasking.geometries.Polygon;
 import net.eads.astrium.dream.util.structures.tasking.SARTaskingParameters;
 import net.eads.astrium.dream.util.structures.tasking.Segment;
 import net.eads.astrium.dream.util.structures.tasking.Status;
-import net.eads.astrium.hmas.conf.DreamConfFolder;
+import net.eads.astrium.hmas.conf.ConfFolder;
 import net.eads.astrium.hmas.conf.exceptions.ConfFileNotFoundException;
 import net.eads.astrium.hmas.operations.DreamEOSPSOperation;
 import net.eads.astrium.hmas.exceptions.GetFeasibilityFault;
-import net.eads.astrium.hmas.fas.configuration.FASConfFolder;
+import net.eads.astrium.hmas.fas.conf.FASConfFolder;
 import net.eads.astrium.hmas.fas.feasibilityanalysis.SARSensorFeasibilityAnalysisHandler;
 import net.eads.astrium.hmas.fas.feasibilityanalysis.SensorFeasibilityAnalysisHandler;
 
@@ -107,7 +107,7 @@ public class GetFeasibilityOperation extends DreamEOSPSOperation<FASConfFolder, 
         }
         
         
-        String folderName = DreamConfFolder.DREAM_WS_CONF_FOLDER + File.separator + 
+        String folderName = ConfFolder.DREAM_WS_CONF_FOLDER + File.separator + 
                 "fas" + File.separator + 
                 "Sentinel1" + File.separator + 
                 "feasibilityRequests" + File.separator;
@@ -158,6 +158,10 @@ public class GetFeasibilityOperation extends DreamEOSPSOperation<FASConfFolder, 
         }
         CoverageProgrammingRequestType coverage = taskingParameters.getCoverageProgrammingRequest();
 
+        if (procedure.equalsIgnoreCase("sar")) {
+            procedure = "S1SAR";
+        }
+        
         if (!procedure.equals("S1SAR"))
             throw new GetFeasibilityFault("Sensor" + procedure + " is not handled by this server.");
         
@@ -418,7 +422,7 @@ public class GetFeasibilityOperation extends DreamEOSPSOperation<FASConfFolder, 
         resp.addNewExtension().set(study);
         
         
-        String folderName = DreamConfFolder.DREAM_WS_CONF_FOLDER + File.separator + 
+        String folderName = ConfFolder.DREAM_WS_CONF_FOLDER + File.separator + 
                 "fas" + File.separator + 
                 "Sentinel1" + File.separator + 
                 "feasibilityResponses" + File.separator;
@@ -520,7 +524,7 @@ public class GetFeasibilityOperation extends DreamEOSPSOperation<FASConfFolder, 
             coords.setCs(",");
             coords.setTs(" ");
 
-            coords.setStringValue(segment.getPolygon().printCoordinates());
+            coords.setStringValue(segment.getPolygon().printCoordinatesGML());
 
             LinearRingType lineRing = LinearRingType.Factory.newInstance();
             lineRing.setCoordinates(coords);

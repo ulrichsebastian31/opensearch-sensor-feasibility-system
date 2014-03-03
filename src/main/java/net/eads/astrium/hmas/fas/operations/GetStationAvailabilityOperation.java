@@ -3,7 +3,7 @@ package net.eads.astrium.hmas.fas.operations;
 import net.eads.astrium.hmas.operations.DreamEOSPSOperation;
 import java.util.List;
 import net.eads.astrium.hmas.exceptions.GetStationAvailabilityFault;
-import net.eads.astrium.hmas.fas.configuration.FASConfFolder;
+import net.eads.astrium.hmas.fas.conf.FASConfFolder;
 
 import net.opengis.eosps.x20.GetStationAvailabilityDocument;
 import net.opengis.eosps.x20.GetStationAvailabilityResponseDocument;

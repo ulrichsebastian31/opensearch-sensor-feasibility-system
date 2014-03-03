@@ -1,7 +1,7 @@
 package net.eads.astrium.hmas.fas.operations;
 
 import net.eads.astrium.hmas.exceptions.GetSensorAvailabilityFault;
-import net.eads.astrium.hmas.fas.configuration.FASConfFolder;
+import net.eads.astrium.hmas.fas.conf.FASConfFolder;
 import net.eads.astrium.hmas.operations.DreamEOSPSOperation;
 
 import net.opengis.eosps.x20.GetSensorAvailabilityDocument;

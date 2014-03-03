@@ -5,7 +5,7 @@
 package net.eads.astrium.dream.fas;
 
 import java.io.IOException;
-import net.eads.astrium.hmas.fas.configuration.os.DescriptionDocumentLoader;
+import net.eads.astrium.hmas.fas.conf.os.DescriptionDocumentLoader;
 import org.junit.Test;
 
 /**

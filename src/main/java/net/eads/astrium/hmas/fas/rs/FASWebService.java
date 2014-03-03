@@ -20,7 +20,7 @@ import javax.ws.rs.core.UriInfo;
 import net.eads.astrium.dream.util.FormatHandler;
 import net.eads.astrium.hmas.exceptions.DreamEoSpsException;
 import net.eads.astrium.hmas.fas.FASWorker;
-import net.eads.astrium.hmas.fas.configuration.exceptions.FASNotFoundException;
+import net.eads.astrium.hmas.fas.conf.exceptions.FASNotFoundException;
 import net.eads.astrium.hmas.rs.exceptions.RequestNotFoundException;
 import net.eads.astrium.hmas.rs.exceptions.ServiceNotFoundException;
 import net.eads.astrium.hmas.fas.rs.parsers.DescribeSensorParser;

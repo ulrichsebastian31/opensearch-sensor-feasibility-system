@@ -2,14 +2,13 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package net.eads.astrium.hmas.fas.configuration.sensors;
+package net.eads.astrium.hmas.fas.conf.sensors;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import net.eads.astrium.hmas.conf.DreamConfFileHandler;
-import net.eads.astrium.hmas.conf.DreamConfFolder;
+import net.eads.astrium.hmas.conf.ConfFileHandler;
+import net.eads.astrium.hmas.conf.ConfFolder;
 
 /**
  *
@@ -27,8 +26,8 @@ public class SensorTaskingDescriptionFile {
     public SensorTaskingDescriptionFile(String satelliteId, String sensorId) {
 
         this.filePath = 
-                DreamConfFolder.DREAM_WS_CONF_FOLDER + 
-                DreamConfFolder.getFASConfTypePath() + 
+                ConfFolder.DREAM_WS_CONF_FOLDER + 
+                ConfFolder.getFASConfTypePath() + 
                 satelliteId + File.separator + 
                 "sensors" + File.separator + 
                 sensorId + File.separator + 
@@ -44,7 +43,7 @@ public class SensorTaskingDescriptionFile {
         
         System.out.println("" + filePath);
         if (new File(filePath).isFile())
-            content = DreamConfFileHandler.getContent(filePath);
+            content = ConfFileHandler.getContent(filePath);
         else
             throw new FileNotFoundException(filePath);
         

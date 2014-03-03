@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package net.eads.astrium.hmas.fas.configuration;
+package net.eads.astrium.hmas.fas.conf;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,16 +12,16 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.eads.astrium.dream.util.structures.SatellitePlatform;
-import net.eads.astrium.hmas.conf.DreamConfFolder;
+import net.eads.astrium.hmas.conf.ConfFolder;
 import net.eads.astrium.hmas.conf.exceptions.ConfFileAlreadyExistsException;
 import net.eads.astrium.hmas.conf.exceptions.ConfFileNotFoundException;
 import net.eads.astrium.hmas.conf.exceptions.ConfFileParsingException;
 import net.eads.astrium.hmas.conf.exceptions.ConfFolderAlreadyExistsException;
 import net.eads.astrium.hmas.conf.exceptions.ConfFolderNotFoundException;
-import net.eads.astrium.hmas.fas.configuration.exceptions.FASAlreadyExistsException;
-import net.eads.astrium.hmas.fas.configuration.exceptions.FASNotFoundException;
-import net.eads.astrium.hmas.fas.configuration.exceptions.SensorAlreadyExistsException;
-import net.eads.astrium.hmas.fas.configuration.sensors.SensorsConfigurationsFolder;
+import net.eads.astrium.hmas.fas.conf.exceptions.FASAlreadyExistsException;
+import net.eads.astrium.hmas.fas.conf.exceptions.FASNotFoundException;
+import net.eads.astrium.hmas.fas.conf.exceptions.SensorAlreadyExistsException;
+import net.eads.astrium.hmas.fas.conf.sensors.SensorsConfigurationsFolder;
 import net.opengis.sensorML.x102.SensorMLDocument;
 import org.apache.xmlbeans.XmlException;
 
@@ -29,7 +29,7 @@ import org.apache.xmlbeans.XmlException;
  *
  * @author re-sulrich
  */
-public class FASConfFolder extends DreamConfFolder {
+public class FASConfFolder extends ConfFolder {
     
     
     //---------------------------------------------------------------------------------------
@@ -51,7 +51,7 @@ public class FASConfFolder extends DreamConfFolder {
     {
         FASConfFolder fasConf = new FASConfFolder(instanceId);
         try {
-            DreamConfFolder.createConfFolder(ConfFolderType.fas, instanceId);
+            ConfFolder.createConfFolder(ConfFolderType.fas, instanceId);
         } catch (ConfFolderAlreadyExistsException ex) {
             Logger.getLogger(FASConfFolder.class.getName()).log(Level.SEVERE, null, ex);
             throw new FASAlreadyExistsException(instanceId);
@@ -96,7 +96,7 @@ public class FASConfFolder extends DreamConfFolder {
     {
         FASConfFolder conf = new FASConfFolder(instanceId);
         try {
-            DreamConfFolder.loadConfFolder(ConfFolderType.fas, instanceId);
+            ConfFolder.loadConfFolder(ConfFolderType.fas, instanceId);
         } catch (ConfFolderNotFoundException ex) {
             Logger.getLogger(FASConfFolder.class.getName()).log(Level.SEVERE, null, ex);
             throw new FASNotFoundException(instanceId);

@@ -2,14 +2,14 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package net.eads.astrium.hmas.fas.configuration;
+package net.eads.astrium.hmas.fas.conf;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import net.eads.astrium.hmas.conf.DreamConfFileHandler;
-import net.eads.astrium.hmas.conf.DreamConfFolder;
+import net.eads.astrium.hmas.conf.ConfFileHandler;
+import net.eads.astrium.hmas.conf.ConfFolder;
 import net.eads.astrium.hmas.conf.exceptions.ConfFileAlreadyExistsException;
 import net.eads.astrium.hmas.conf.exceptions.ConfFileNotFoundException;
 
@@ -36,28 +36,28 @@ public class OperationsConfigurationFile {
         
         operations.put("serverbaseuri", serverBaseURI);
         
-        DreamConfFileHandler.createConfigurationFile(filePath, operations);
+        ConfFileHandler.createConfigurationFile(filePath, operations);
     }
     
     public OperationsConfigurationFile(String instanceId) 
     {
         filePath = 
-                DreamConfFolder.DREAM_WS_CONF_FOLDER + 
-                DreamConfFolder.getFASConfTypePath() + 
+                ConfFolder.DREAM_WS_CONF_FOLDER + 
+                ConfFolder.getFASConfTypePath() + 
                 instanceId + File.separator + "operations";
     }
     
     public String[] getGetOperations() throws IOException, ConfFileNotFoundException
     {
-        return DreamConfFileHandler.getProperties(filePath).get("getoperations").split(",");
+        return ConfFileHandler.getProperties(filePath).get("getoperations").split(",");
     }
     public String[] getPostOperations() throws IOException, ConfFileNotFoundException
     {
-        return DreamConfFileHandler.getProperties(filePath).get("postoperations").split(",");
+        return ConfFileHandler.getProperties(filePath).get("postoperations").split(",");
     }
     
     public String getServerBaseURI() throws IOException, ConfFileNotFoundException
     {
-        return DreamConfFileHandler.getProperties(filePath).get("serverbaseuri");
+        return ConfFileHandler.getProperties(filePath).get("serverbaseuri");
     }
 }
