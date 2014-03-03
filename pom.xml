@@ -12,19 +12,22 @@
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.build.finalName>HMAS-FAS-1.0-SNAPSHOT</project.build.finalName>
-		
+        
         <netbeans.hint.jdkPlatform>JDK_1.7_32bit</netbeans.hint.jdkPlatform>
         <netbeans.hint.deploy.server>Tomcat70</netbeans.hint.deploy.server> 
+        
+        <project.revision>${prefix.revision}</project.revision>
+        <project.finalName>${project.artifactId}-${project.version}</project.finalName>
+        
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>javax.ws.rs</groupId>
             <artifactId>jsr311-api</artifactId>
-              <version>1.1</version>
+            <version>1.1</version>
             <scope>provided</scope>
-          </dependency>
+        </dependency>
         <dependency>
             <groupId>javax.mail</groupId>
             <artifactId>mail</artifactId>
@@ -34,54 +37,40 @@
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-api</artifactId>
-            <version>6.0</version>
+            <version>7.0</version>
             <scope>provided</scope>
         </dependency>
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-     <dependency>
-	<groupId>junit</groupId>
-	<artifactId>junit</artifactId>
-	<version>4.11</version>
-            <scope>test</scope>
-    </dependency>
         
         
         
         <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+            <scope>test</scope>
+        </dependency>
+        
+        <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
-            <version>6.0</version>
+            <version>7.0</version>
             <scope>provided</scope>
         </dependency>
         
         <!--XML libraries-->
-	<dependency>
+        <dependency>
             <groupId>org.apache.xmlbeans</groupId>
             <artifactId>xmlbeans</artifactId>
             <version>2.6.0</version>
-	</dependency>
-	<dependency>
+        </dependency>
+        <dependency>
             <groupId>xmlbeans</groupId>
             <artifactId>xbean</artifactId>
             <version>2.2.0</version>
-	</dependency>
+        </dependency>
         
         <!--JSON library-->
-            
+        
         <dependency>
             <groupId>com.ibm.icu</groupId>
             <artifactId>icu4j</artifactId>
@@ -104,7 +93,7 @@
             <groupId>net.eads.astrium.dream.eocfihandler</groupId>
             <artifactId>DreamEOCFIHandler</artifactId>
             <version>1.0-SNAPSHOT</version>
-            <classifier>linux</classifier>
+            <classifier>windows</classifier>
         </dependency>
         
         <dependency>
@@ -130,29 +119,29 @@
 	
 	
 	
-	<dependency>
+        <dependency>
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-server</artifactId>
             <version>1.17</version>
-	</dependency>
-	<dependency>
+        </dependency>
+        <dependency>
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-servlet</artifactId>
             <version>1.17</version>
             <scope>compile</scope>
-	</dependency>
+        </dependency>
 	
-	<dependency>
+        <dependency>
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-client</artifactId>
             <version>1.17</version>
-	</dependency>
+        </dependency>
 
-	<dependency>
+        <dependency>
             <groupId>com.sun.jersey.contribs</groupId>
             <artifactId>jersey-apache-client</artifactId>
             <version>1.17</version>
-	</dependency>
+        </dependency>
 	
         <!--Jersey "multipart/form-data" handling-->
         
@@ -166,38 +155,46 @@
             <artifactId>jersey-multipart</artifactId>
             <version>1.17</version>
         </dependency>
-         <dependency>
+        <dependency>
             <groupId>org.jvnet</groupId>
             <artifactId>mimepull</artifactId>
             <version>1.4</version>
         </dependency>
         
-	<dependency>
+        <dependency>
             <groupId>org.glassfish.grizzly</groupId>
             <artifactId>grizzly-http</artifactId>
             <version>2.3.2</version>
-	</dependency>
-	<dependency>
+        </dependency>
+        <dependency>
             <groupId>org.glassfish.grizzly</groupId>
             <artifactId>grizzly-http-server</artifactId>
             <version>2.3.2</version>
-	</dependency>
+        </dependency>
 
-	<dependency>
+        <dependency>
             <groupId>org.glassfish.grizzly</groupId>
             <artifactId>grizzly-http-servlet</artifactId>
             <version>2.3.2</version>
-	</dependency>
-	<dependency>
+        </dependency>
+        <dependency>
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-grizzly2</artifactId>
             <version>1.10-b02</version>
         </dependency>
-	<dependency>
+        <dependency>
             <groupId>org.glassfish</groupId>
             <artifactId>javax.servlet</artifactId>
             <version>3.1</version>
-	</dependency>
+        </dependency>
+        
+        
+        
+        <dependency>
+            <groupId>com.google.code.maven-svn-revision-number-plugin</groupId>
+            <artifactId>svn-revision-number-maven-plugin</artifactId>
+            <version>1.13</version>
+        </dependency>
     </dependencies>
  
  
@@ -235,7 +232,7 @@
                 <enabled>false</enabled>
             </snapshots>
         </repository-->
-         <repository>
+        <repository>
             <id>jboss nexus</id>
             <name>Jboss nexus</name>
             <url>https://repository.jboss.org/nexus/content/groups/public/</url>
@@ -251,17 +248,18 @@
                 <enabled>true</enabled>
             </snapshots>
         </repository>
-		<repository>
-                <id>mvnrepository</id>
-                <url>http://repo1.maven.org/maven2</url>
-                <snapshots>
-                    <enabled>false</enabled>
-                </snapshots>
-                <releases>
-                    <enabled>true</enabled>
-                </releases>
-            </repository>
+        <repository>
+            <id>mvnrepository</id>
+            <url>http://repo1.maven.org/maven2</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
     </repositories>
+    
     <pluginRepositories>
         <pluginRepository>
             <id>maven2-repository.dev.java.net</id>
@@ -275,9 +273,29 @@
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
             </resource>
-    </resources>
-
+        </resources>
+        
         <plugins>
+            <plugin>
+                <groupId>com.google.code.maven-svn-revision-number-plugin</groupId>
+                <artifactId>svn-revision-number-maven-plugin</artifactId>
+                <version>1.13</version> <!-- please use the latest version -->
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>revision</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <entries>
+                        <entry>
+                            <prefix>prefix</prefix>
+                        </entry>
+                    </entries>
+                </configuration>
+            </plugin>
+            
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -296,18 +314,37 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <version>2.1.1</version>
                 <configuration>
-                    <!--<warName>HMAS-FAS</warName>-->
+                    <warName>${project.finalName}</warName>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
             </plugin>
 
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.1</version>
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${endorsed.dir}</outputDirectory>
+                            <silent>true</silent>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>javax</groupId>
+                                    <artifactId>javaee-endorsed-api</artifactId>
+                                    <version>7.0</version>
+                                    <type>jar</type>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
-
-
-
-
-
-
     
     </build>
 
