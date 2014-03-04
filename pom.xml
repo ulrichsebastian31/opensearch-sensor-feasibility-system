@@ -17,7 +17,7 @@
         <netbeans.hint.deploy.server>Tomcat70</netbeans.hint.deploy.server> 
         
         <project.revision>${prefix.revision}</project.revision>
-        <project.finalName>${project.artifactId}-${project.version}</project.finalName>
+        <project.finalName>${project.artifactId}</project.finalName>
         
     </properties>
 
