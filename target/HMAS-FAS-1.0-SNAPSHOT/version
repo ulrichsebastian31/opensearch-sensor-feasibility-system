@@ -1,0 +1,4 @@
+repository = ${prefix.repository}
+path = ${prefix.path}
+revision = ${prefix.revision}
+date = ${prefix.committedDate}

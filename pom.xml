@@ -198,75 +198,6 @@
     </dependencies>
  
  
-    <repositories>
-        <repository>
-            <id>java.net.1</id>
-            <name>java.net community</name>
-            <url>http://download.java.net/maven/1</url>
-            <!--layout>legacy</layout-->
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>java.net.2</id>
-            <name>java.net community</name>
-            <url>http://download.java.net/maven/2</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>java.net.glassfish</id>
-            <name>java.net community</name>
-            <url>http://download.java.net/maven/glassfish</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <!--repository>
-            <id>jboss.com</id>
-            <name>Jboss</name>
-            <url>http://repository.jboss.com/maven2/</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository-->
-        <repository>
-            <id>jboss nexus</id>
-            <name>Jboss nexus</name>
-            <url>https://repository.jboss.org/nexus/content/groups/public/</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>repo1.maven.org</id>
-            <name>repo1.maven.org</name>
-            <url>http://repo1.maven.org/maven2/</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>mvnrepository</id>
-            <url>http://repo1.maven.org/maven2</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-        </repository>
-    </repositories>
-    
-    <pluginRepositories>
-        <pluginRepository>
-            <id>maven2-repository.dev.java.net</id>
-            <url>http://download.java.net/maven/2</url>
-        </pluginRepository>
-    </pluginRepositories>
-
     <build>
         <resources>
             <resource>
@@ -276,10 +207,10 @@
         </resources>
         
         <plugins>
-            <plugin>
+<!--            <plugin>
                 <groupId>com.google.code.maven-svn-revision-number-plugin</groupId>
                 <artifactId>svn-revision-number-maven-plugin</artifactId>
-                <version>1.13</version> <!-- please use the latest version -->
+                <version>1.13</version>  please use the latest version 
                 <executions>
                     <execution>
                         <goals>
@@ -294,7 +225,7 @@
                         </entry>
                     </entries>
                 </configuration>
-            </plugin>
+            </plugin>-->
             
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
