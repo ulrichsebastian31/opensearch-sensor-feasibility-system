@@ -75,7 +75,7 @@ public class SatelliteConfigurationFile {
             orbitType = properties.get("orbitType");
         }
         
-        SatellitePlatform platform = new SatellitePlatform(id, noradName, name, desc, href, new Orbit(orbitType, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""));
+        SatellitePlatform platform = new SatellitePlatform(id, "", noradName, name, desc, href, new Orbit(orbitType, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""));
         
         return platform;
     }

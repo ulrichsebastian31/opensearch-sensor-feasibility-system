@@ -25,6 +25,10 @@ public class DescriptionDocumentLoader {
                 instanceId + File.separator + "description.xml";
     }
     
+    public String getFilePath() {
+        return filePath;
+    }
+    
     public String getContent() throws IOException {
         
         return ConfFileHandler.getContent(filePath);

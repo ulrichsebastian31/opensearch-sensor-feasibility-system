@@ -24,7 +24,7 @@ public class ConfFolder {
     public static enum ConfFolderType { fas, mmfas};
     public static String getFASConfTypePath()
     {
-        return "fas" + File.separator;
+        return "fas_hmas" + File.separator;
     }
     public static String getMMFASConfTypePath()
     {
