@@ -530,8 +530,8 @@ public class OSFeasibilityParser {
                 for (int i = 0; i < pointsCoords.length; i++) {
                     String[] pointCoords = pointsCoords[i].split(" ");
                     points.add(new Point(
-                            Double.valueOf(pointCoords[0]), 
                             Double.valueOf(pointCoords[1]), 
+                            Double.valueOf(pointCoords[0]), 
                             0.0));
                 }
 
