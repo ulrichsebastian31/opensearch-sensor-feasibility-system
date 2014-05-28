@@ -17,7 +17,7 @@
         <netbeans.hint.deploy.server>Tomcat70</netbeans.hint.deploy.server> 
         
         <project.revision>${prefix.revision}</project.revision>
-        <project.finalName>${project.artifactId}</project.finalName>
+        <project.finalName>${project.artifactId}-${project.version}</project.finalName>
         
     </properties>
 
@@ -93,7 +93,8 @@
             <groupId>net.eads.astrium.dream.eocfihandler</groupId>
             <artifactId>DreamEOCFIHandler</artifactId>
             <version>1.0-SNAPSHOT</version>
-            <classifier>windows</classifier>
+            <classifier>linux</classifier>
+            <!--<classifier>windows</classifier>-->
         </dependency>
         
         <dependency>

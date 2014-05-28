@@ -30,6 +30,10 @@ import java.util.List;
 import java.util.Map;
 import javax.ws.rs.core.MultivaluedMap;
 import net.eads.astrium.dream.util.DateHandler;
+import net.eads.astrium.dream.util.structures.tasking.geometries.Circle;
+import net.eads.astrium.dream.util.structures.tasking.geometries.Geometry;
+import net.eads.astrium.dream.util.structures.tasking.geometries.Point;
+import net.eads.astrium.dream.util.structures.tasking.geometries.Polygon;
 import net.opengis.eosps.x20.AcquisitionAngleType;
 import net.opengis.eosps.x20.AcquisitionParametersOPTType;
 import net.opengis.eosps.x20.AcquisitionParametersSARType;
@@ -96,46 +100,55 @@ public class OSFeasibilityParser {
 
         //Region Of Interest
 
+        
+        
+        
+        
+        
         //Box (13-039) is two points
         //To be changed to polygon (EOSPS) = parseable string : lat.1,lon.1 lat.2,lon.2 ... lat.N,lon.N
-        String[] box = null;
-        String coordinates = "";
-        String bbox = conf.get("box");
         
-        System.out.println("Box : " + bbox);
+        Geometry geometry = null;
         
-        if (bbox == null || bbox.equals("")) {
-            throw new ParseException("Could not parse the 'box' parameter.", -1);
+        if (conf.get("box") != null && !conf.get("box").equals("")) {
+            String[] box = null;
+        
+            box = conf.remove("box").split(",");
+            if (box.length < 4) {
+                throw new ParseException("box", -1);
+            }
+            
+            List<Point> points = new ArrayList<>();
+            points.add(new Point(Double.valueOf(box[0]), Double.valueOf(box[1]), 0.0));
+            points.add(new Point(Double.valueOf(box[2]), Double.valueOf(box[1]), 0.0));
+            points.add(new Point(Double.valueOf(box[2]), Double.valueOf(box[3]), 0.0));
+            points.add(new Point(Double.valueOf(box[0]), Double.valueOf(box[3]), 0.0));
+            points.add(new Point(Double.valueOf(box[0]), Double.valueOf(box[1]), 0.0));
+            
+            geometry = new Polygon(points);
         }
-        box = bbox.split(",");
-        if (box.length < 4) {
-            throw new ParseException("box", -1);
+        
+        if (conf.get("radius") != null && !conf.get("radius").equals("")) {
+            double lon = Double.valueOf(conf.remove("lon"));
+            double lat = Double.valueOf(conf.remove("lat"));
+            double radius = Double.valueOf(conf.remove("radius"));
+            
+            geometry = new Circle(new Point(lon, lat, 0.0), radius);
         }
-
-        double latSouth = Double.valueOf(box[3]);
-        double latNorth = Double.valueOf(box[1]);
-        double lonWest = Double.valueOf(box[0]);
-        double lonEast = Double.valueOf(box[2]);
-
-        if (latSouth > latNorth) {
-            double tmp = latSouth;
-            latSouth = latNorth;
-            latNorth = tmp;
+        
+        if (conf.get("geometry") != null && !conf.get("geometry").equals("")) {
+            
+            geometry = parseGeometry(conf.remove("geometry"));
         }
-
-        if (lonWest > lonEast) {
-            double tmp = lonWest;
-            lonWest = lonEast;
-            lonEast = tmp;
+        if (geometry != null)
+            System.out.println("Geometry : " + geometry.getClass().getName() + " : " + geometry.printCoordinatesGML());
+        else {
+            System.out.println("Geometry null");
+            throw new ParseException("Could not read the Area of Interest", 0);
         }
-
-        coordinates = ""
-                + lonWest + "," + latNorth + " "
-                + lonEast + "," + latNorth + " "
-                + lonEast + "," + latSouth + " "
-                + lonWest + "," + latSouth + " "
-                + lonWest + "," + latNorth + "";
-
+        
+        
+        
         //TOI
         String begin = conf.remove("start"); //"2013-06-30T00:00:00Z";
         String end = conf.remove("end"); //"2013-07-20T00:00:00Z";
@@ -277,7 +290,8 @@ public class OSFeasibilityParser {
         coords.setDecimal(".");
         coords.setCs(",");
         coords.setTs(" ");
-        coords.setStringValue(coordinates);
+        coords.setStringValue(
+                geometry.printCoordinatesGML() );
         LinearRingType lineRing = LinearRingType.Factory.newInstance();
         lineRing.setCoordinates(coords);
         ext.setAbstractRing(lineRing);
@@ -483,5 +497,66 @@ public class OSFeasibilityParser {
         }
 
         return doc;
+    }
+    
+    public static Geometry parseGeometry(String geometryString) {
+        
+        Geometry geometry = null;
+        
+        System.out.println("" + geometryString);
+        
+        String[] geom = geometryString.split("\\(", 2);
+            
+        String geomType = geom[0];
+        String coords = geom[1].substring(0,geom[1].length() - 1);
+
+        System.out.println("" + geomType + "\n" + coords + "\n" + coords.substring(1, coords.length() - 1));
+        
+        switch (geomType) {
+//            POINT(6 10)
+            case "POINT":
+
+            break;
+//            LINESTRING(3 4,10 50,20 25)
+            case "LINESTRING":
+
+            break;
+//            POLYGON((1 1,5 1,5 5,1 5,1 1),(2 2,2 3,3 3,3 2,2 2))
+            case "POLYGON":
+                List<Point> points = new ArrayList<>();
+                String[] pols = coords.substring(1, coords.length() - 1).split("\\),\\(");
+                String exterior = pols[0];
+                String[] pointsCoords = exterior.split(",");
+                for (int i = 0; i < pointsCoords.length; i++) {
+                    String[] pointCoords = pointsCoords[i].split(" ");
+                    points.add(new Point(
+                            Double.valueOf(pointCoords[0]), 
+                            Double.valueOf(pointCoords[1]), 
+                            0.0));
+                }
+
+                geometry = new Polygon(points);
+
+            break;
+//            MULTIPOINT(3.5 5.6, 4.8 10.5)
+            case "MULTIPOINT":
+
+            break;
+//            MULTILINESTRING((3 4,10 50,20 25),(-5 -8,-10 -8,-15 -4))
+            case "MULTILINESTRING":
+
+            break;
+//            MULTIPOLYGON(
+            //(
+            //(1 1,5 1,5 5,1 5,1 1),(2 2,2 3,3 3,3 2,2 2))
+            //,
+            //((6 3,9 2,9 4,6 3))
+            //)
+            case "MULTIPOLYGON":
+
+            break;
+        }
+
+        return geometry;
     }
 }

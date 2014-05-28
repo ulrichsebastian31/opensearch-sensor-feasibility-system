@@ -47,6 +47,7 @@ import net.opengis.eosps.x20.SegmentType;
 import net.opengis.eosps.x20.StatusReportType;
 import net.opengis.eosps.x20.TaskingParametersType;
 import net.opengis.eosps.x20.ValidationParametersSARType;
+import net.opengis.gml.x32.CodeType;
 import net.opengis.gml.x32.CoordinatesType;
 import net.opengis.gml.x32.LinearRingType;
 import net.opengis.gml.x32.PolygonType;
@@ -504,7 +505,10 @@ public class GetFeasibilityOperation extends DreamEOSPSOperation<FASConfFolder, 
             //EOP
             EarthObservationEquipmentType eoEquipment = seg.addNewAcquisitionMethod().addNewEarthObservationEquipment();
             //Sensor
-            eoEquipment.addNewSensor().addNewSensor().addNewSensorType().setCodeSpace(sensorType);
+            CodeType st = eoEquipment.addNewSensor().addNewSensor().addNewSensorType();
+            st.setCodeSpace("urn:ogc:def:property:OGC:sensorType");
+            st.setStringValue(sensorType);
+            
             eoEquipment.addNewInstrument().addNewInstrument().setShortName(sensorId);
             //Platform
             PlatformType plat = eoEquipment.addNewPlatform().addNewPlatform();
