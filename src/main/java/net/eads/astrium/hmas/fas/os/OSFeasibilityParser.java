@@ -120,9 +120,9 @@ public class OSFeasibilityParser {
             
             List<Point> points = new ArrayList<>();
             points.add(new Point(Double.valueOf(box[0]), Double.valueOf(box[1]), 0.0));
-            points.add(new Point(Double.valueOf(box[2]), Double.valueOf(box[1]), 0.0));
-            points.add(new Point(Double.valueOf(box[2]), Double.valueOf(box[3]), 0.0));
             points.add(new Point(Double.valueOf(box[0]), Double.valueOf(box[3]), 0.0));
+            points.add(new Point(Double.valueOf(box[2]), Double.valueOf(box[3]), 0.0));
+            points.add(new Point(Double.valueOf(box[2]), Double.valueOf(box[1]), 0.0));
             points.add(new Point(Double.valueOf(box[0]), Double.valueOf(box[1]), 0.0));
             
             geometry = new Polygon(points);

@@ -14,7 +14,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.eads.astrium.dream.eocfihandler.dreameocfihandler.EoCfiHndlrError;
+import net.eads.astrium.dream.util.Algorithms;
 import net.eads.astrium.dream.util.DateHandler;
+import net.eads.astrium.dream.util.logging.DreamLogger;
 import net.eads.astrium.dream.util.structures.SatellitePlatform;
 import net.eads.astrium.dream.util.structures.TimePeriod;
 import net.eads.astrium.dream.util.structures.tasking.geometries.Point;
@@ -210,8 +212,20 @@ public class GetFeasibilityOperation extends DreamEOSPSOperation<FASConfFolder, 
                 }
             }
 
-            coords = new Polygon(points);
-            roiType = "POLYGON";
+                Polygon pol = new Polygon(points);
+                
+                DreamLogger.getThreadLogger(Thread.currentThread().getId()).info("");
+                DreamLogger.getThreadLogger(Thread.currentThread().getId()).info("Polygon before clockwise : " + pol.printCoordinatesGML());
+                DreamLogger.getThreadLogger(Thread.currentThread().getId()).info("");
+                
+                Algorithms.getClockWise(pol);
+                
+                DreamLogger.getThreadLogger(Thread.currentThread().getId()).info("");
+                DreamLogger.getThreadLogger(Thread.currentThread().getId()).info("Polygon after clockwise : " + pol.printCoordinatesGML());
+                DreamLogger.getThreadLogger(Thread.currentThread().getId()).info("");
+                
+                coords = pol;
+                roiType = "POLYGON";
         }
 
         Date begin = null;
