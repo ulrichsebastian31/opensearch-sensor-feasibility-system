@@ -1,0 +1,6 @@
+EOSP 1.0 Test Suite Release Notes
+==================================
+
+2014-05-05 (intecs):
+- First version of the suite
+
