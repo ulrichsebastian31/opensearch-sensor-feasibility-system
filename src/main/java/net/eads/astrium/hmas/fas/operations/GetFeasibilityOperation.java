@@ -203,8 +203,8 @@ public class GetFeasibilityOperation extends DreamEOSPSOperation<FASConfFolder, 
 
                     String[] coord = p[i].split(cs);
 
-                    double longitude = Double.valueOf(coord[0].replace(dec, "."));
-                    double latitude = Double.valueOf(coord[1].replace(dec, "."));
+                    double longitude = Double.valueOf(coord[1].replace(dec, "."));
+                    double latitude = Double.valueOf(coord[0].replace(dec, "."));
 
                     points.add(new Point(longitude, latitude, 0.0));
                 }
