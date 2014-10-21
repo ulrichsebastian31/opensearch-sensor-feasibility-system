@@ -529,9 +529,9 @@ public class OSFeasibilityParser {
                 String[] pointsCoords = exterior.split(",");
                 for (int i = 0; i < pointsCoords.length; i++) {
                     String[] pointCoords = pointsCoords[i].split(" ");
-                    points.add(new Point(
-                            Double.valueOf(pointCoords[1]), 
+                    points.add(new Point(//Long, lat
                             Double.valueOf(pointCoords[0]), 
+                            Double.valueOf(pointCoords[1]), 
                             0.0));
                 }
 
